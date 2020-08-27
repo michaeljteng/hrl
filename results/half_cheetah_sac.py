@@ -1,4 +1,7 @@
 import gym
+import sys
+sys.path.append('./')
+import agents
 from agents.policy_gradient_agents.PPO import PPO
 from agents.actor_critic_agents.DDPG import DDPG
 from agents.actor_critic_agents.SAC import SAC

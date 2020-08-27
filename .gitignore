@@ -2,6 +2,8 @@
 *cache
 *.idea
 *.log
+*.swo
+*.swp
 *logs/
 logs/
 runs/
