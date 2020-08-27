@@ -102,10 +102,14 @@ class Base_Agent(object):
             try:
                 return self.environment.spec.reward_threshold
             except AttributeError:
-                return self.environment.unwrapped.spec.reward_threshold
+                try:
+                    return self.environment.unwrapped.spec.reward_threshold
+                except:
+                    return np.inf
 
     def get_trials(self):
         """Gets the number of trials to average a score over"""
+        return 100
         if self.environment_title in ["AntMaze", "FetchReach", "Hopper", "Walker2d", "CartPole"]: return 100
         try: return self.environment.unwrapped.trials
         except AttributeError: return self.environment.spec.trials
