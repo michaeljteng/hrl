@@ -10,10 +10,21 @@ import time
 from nn_builder.pytorch.NN import NN
 # from tensorboardX import SummaryWriter
 from torch.optim import optimizer
+try:
+    import wandb
+except:
+    wandb = None
 
 class Base_Agent(object):
 
     def __init__(self, config):
+        try:
+            wandb.init(project=config.sweep)
+        except:
+            wandb = None
+        #  wandb.config.algo = "sac"
+        #  wandb.config.update(args)
+
         self.logger = self.setup_logger()
         self.debug_mode = config.debug_mode
         # if self.debug_mode: self.tensorboard = SummaryWriter()
@@ -214,6 +225,7 @@ class Base_Agent(object):
         self.game_full_episode_scores.append(self.total_episode_score_so_far)
         self.rolling_results.append(np.mean(self.game_full_episode_scores[-1 * self.rolling_score_window:]))
         self.save_max_result_seen()
+        if wandb: wandb.log({"reward": self.game_full_episode_scores[-1]}, step=len(self.game_full_epsiode_scores))
 
     def save_max_result_seen(self):
         """Updates the best episode result seen so far"""
